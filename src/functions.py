@@ -92,6 +92,7 @@ def index_to_coordinate(sequence):
     for i in range (len(sequence)):
         sequence[i][0] += 1
         sequence[i][1] += 1
+        sequence[i][0], sequence[i][1] = sequence[i][1], sequence[i][0]
     return sequence
 
 # index_max = possible_move[0][1]
