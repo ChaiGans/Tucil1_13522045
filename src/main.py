@@ -41,19 +41,29 @@ def REUSE_PROGRAM_CONFIRMATION():
             print("We do not understand your command, please enter (y/n) only.")
             confirmation = input("Do you want to reuse the program ? (y/n) ")
 
-def OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution):
+def get_valid_filename():
+    while True:
+        filename = input("Enter filename (must end with .txt): ")
+        if filename.endswith('.txt'):
+            return filename
+        else:
+            print("Please enter a filename with a .txt extension.")
+
+def OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution, boolean):
+    # boolean = true (got formatted sequence) ; false (no formatted sequence)
     confirmation = input("Do you want to save your solution? (y/n) ")
     choice_correct = False
     while (not choice_correct):
         if (confirmation == "y"):
             choice_correct = True
-            filename = input("Enter filename : ")
+            filename = get_valid_filename()
             with open(filename, "w") as file1:
                 file1.write(str(maximum_reward) + "\n")
-                file1.write(formatted_sequence + "\n")
-                for coordinate in move_coordinates:
-                    file1.write(",".join(map(str, coordinate)) + "\n")
-                file1.write("%s ms" % time_execution)
+                if (boolean):
+                    file1.write(formatted_sequence + "\n")
+                    for coordinate in move_coordinates:
+                        file1.write(", ".join(map(str, coordinate)) + "\n")
+                file1.write("\n%s ms" % time_execution)
         elif (confirmation == "n"):
             choice_correct = True
         else:
@@ -100,20 +110,54 @@ def bruteforce (buffer_size, matrix, direction, currentX, currentY, current_jour
 GREETING_MESSAGE()
 while True:
     METHOD_CHOICE_MESSAGE()
+
+    # Initialization for global variable that is used in bruteforce function
+    possible_move = ['']  
+    maximum_reward = 0
+
     method_choice = int(input("Enter your choice : "))
     if (method_choice == 1):
         filename = input("Input the filename : ")
-        try:
-            read_file(filename)
-        except Exception as error:
-            print("Your input is not valid or could not be read by the program")
+
+        max_buffer_size, matrix, sequences, matrix_width, matrix_height, sequences_rewards = read_file(filename)
+        
+        # information of randomization result of input two method
+        PRINT_INFORMATION(matrix, sequences, sequences_rewards, max_buffer_size)
+
+        # begin bruteforce
+        start_time = time.time()
+        bruteforce(max_buffer_size, matrix, True, 0, 0, [], sequences, sequences_rewards, matrix_width, matrix_height)
+        # bruteforce ended
+
+        # format needed information
+        time_execution = (time.time() - start_time) * 1000
+        if (maximum_reward != 0):
+            formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move, matrix))
+            move_coordinates = index_to_coordinate(possible_move)
+
+            # output as formatted
+            FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution)
+
+            # asking user to output to file
+            OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution, True)
+        else:
+            print(maximum_reward)
+            print()
+            print(time_execution, "ms")  
+            print()
+
+            # asking user to output to file
+            OUTPUT_TO_FILE_CONFIRMATION([], [], time_execution, False)
+
+        # asking user if they want to reuse the program
+        if not REUSE_PROGRAM_CONFIRMATION() :
+            exit()
+        else:
+            CLEAR_TERMINAL()
+            GREETING_MESSAGE()
+        
     elif (method_choice == 2):
-        # Input method 2
-
-        # Initialization for global variable that is used in bruteforce function
-        possible_move = ['']  
-        maximum_reward = 0
-
+        
         # Asking input from user
         # unique_token that is available initialization
         unique_token_amount = int(input())
