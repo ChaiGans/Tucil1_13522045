@@ -1,135 +1,80 @@
-import time
-import random
+from functions import *
+import os
 
-random.seed(time.time())
+def CLEAR_TERMINAL():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-def print_matrix(matrix):
-    for row in matrix:
-        print(" ".join(map(str, row)))
+def METHOD_CHOICE_MESSAGE():
+    print("|| 1. From file .txt                ||")
+    print("|| 2. Random                        ||")
+    print("|| 3. Exit Program                  ||")
+    print("======================================")
 
-def print_coordinate(matrix):
-    for row in matrix:
-        print(",".join(map(str, row)))
-        
-def read_file(filename):
-    with open(filename, 'r', encoding='utf-8') as file:
-        max_buffer_size = int(file.readline().strip())
+def GREETING_MESSAGE():
+    print("======================================")
+    print("||  Cyberpunk 2077 Breach Protocol  ||")
+    print("||       Dev: Elbert Chailes        ||")
+    print("======================================")
 
-        matrix_width, matrix_height = map(int, file.readline().strip().split())
+def ERROR_MESSAGE(start_choice, end_choice):
+    print("Your input is out of bound of the choices")
+    print("Please input from range " + str(start_choice), "to", str(end_choice))
 
-        matrix = []
-        for _ in range(matrix_height):
-            row = list(map(str, file.readline().strip().split()))
-            matrix.append(row)
+def FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution):
+    print(maximum_reward)
+    print(formatted_sequence)
+    print_coordinate(move_coordinates)
+    print()
+    print(time_execution, "ms")  
+    print()
 
-        number_of_sequences = int(file.readline().strip())
-
-        sequences = []
-        sequences_rewards = []
-        for _ in range(number_of_sequences):
-            sequence = file.readline().strip().split()
-            sequences.append(sequence)
-            reward = int(file.readline().strip()) 
-            sequences_rewards.append(reward)
-
-    return max_buffer_size, matrix, sequences, matrix_width, matrix_height, sequences_rewards
-
-# Input method 1
-filename = 'input.txt'
-# max_buffer_size, matrix, sequences, matrix_width, matrix_height, sequences_rewards = read_file(filename)
-
-# Input method 2
-unique_token_amount = int(input())
-unique_token = ['' for i in range(unique_token_amount)]
-unique_token_input = input().split()
-for i in range (len(unique_token)):
-    unique_token[i] = unique_token_input[i]
-max_buffer_size = int(input())
-matrix_width, matrix_height = map(int, input().split())
-sequence_amount = int(input())
-maximal_sequence_size = int(input())
-
-def matrix_randomize(matrix_width, matrix_height, unique_token):
-    initial_matrix = [['' for _ in range (matrix_width)] for _ in range (matrix_height)]
-    for i in range (matrix_height):
-        for j in range (matrix_width):
-            initial_matrix[i][j] = unique_token[random.randint(0, len(unique_token)-1)]
-    return initial_matrix
-matrix = matrix_randomize(matrix_width, matrix_height, unique_token)
-print_matrix(matrix)
-
-def sequence_randomize(sequence_amount, maximal_sequence_size, unique_token):
-    result_sequences = []
-    for i in range (sequence_amount):
-        sequence_size = random.randint(2, maximal_sequence_size)
-        initial_sequence = ['' for _ in range (sequence_size)]
-        for j in range (sequence_size):
-            initial_sequence[j] = unique_token[random.randint(0, len(unique_token)-1)]
-        result_sequences.append(initial_sequence)
-    return result_sequences
-
-def reward_randomize(sequence_amount):
-    result_rewards = []
-    for _ in range (sequence_amount):
-        result_rewards.append(random.randint(10, 50))
-    return result_rewards
-
-sequences = sequence_randomize(sequence_amount, maximal_sequence_size, unique_token)
-sequences_rewards = reward_randomize(sequence_amount)
-print(sequences)
-print(sequences_rewards)
-
-print("Max Buffer Size:", max_buffer_size)
-print("Matrix:")
-print_matrix(matrix)
-print("Sequences:", sequences)
-print("Sequence Rewards:", sequences_rewards)
-
-# def currentjourney_to_sequence (current_journey):
-#     a = []
-#     for i in range (len(current_journey)):
-#         a.append(matrix[current_journey[i][0]][current_journey[i][1]])
-#     return a
-
-def currentjourney_to_sequence (current_journey):
-    a = []
-    for i in range (len(current_journey)):
-        a.append(matrix[current_journey[i][0]][current_journey[i][1]])
-    return a
-
-def is_subarray(sequence, subarray):
-    if len(subarray) > len(sequence):
-        return False
-
-    for i in range(len(sequence) - len(subarray) + 1):
-        if sequence[i:i+len(subarray)] == subarray:
+def REUSE_PROGRAM_CONFIRMATION():
+    confirmation = input("Do you want to reuse the program? (y/n) ")
+    choice_correct = False
+    while (not choice_correct):
+        if (confirmation == "y"):
+            choice_correct = True
             return True
+        elif (confirmation == "n"):
+            return False
+        else:
+            print("We do not understand your command, please enter (y/n) only.")
+            confirmation = input("Do you want to reuse the program ? (y/n) ")
 
-    return False
+def OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution):
+    confirmation = input("Do you want to save your solution? (y/n) ")
+    choice_correct = False
+    while (not choice_correct):
+        if (confirmation == "y"):
+            choice_correct = True
+            filename = input("Enter filename : ")
+            with open(filename, "w") as file1:
+                file1.write(str(maximum_reward) + "\n")
+                file1.write(formatted_sequence + "\n")
+                for coordinate in move_coordinates:
+                    file1.write(",".join(map(str, coordinate)) + "\n")
+                file1.write("%s ms" % time_execution)
+        elif (confirmation == "n"):
+            choice_correct = True
+        else:
+            print("We do not understand your command, please enter (y/n) only.")
+            confirmation = input("Do you want to save your solution? (y/n) ")
 
-def count_reward(current_journey):
-    reward = 0
-    sequence = currentjourney_to_sequence(current_journey)
-    for i in range(len(sequences)):
-        if (is_subarray(sequence, sequences[i])):
-            reward += sequences_rewards[i]
-    return reward
 
-def index_to_coordinate(sequence):
-    for i in range (len(sequence)):
-        sequence[i][0] += 1
-        sequence[i][1] += 1
-    return sequence
+def PRINT_INFORMATION(matrix, sequences, sequences_rewards, max_buffer_size):
+    print("Max Buffer Size:", max_buffer_size)
+    print("Matrix:")
+    print_matrix(matrix)
+    print("Sequences:", sequences)
+    print("Sequence Rewards:", sequences_rewards)  
 
 # direction (true: vertical, false: horcaizontal)
-possible_move = ['']  
-maximum_reward = 0
-def bruteforce (buffer_size, matrix, direction, currentX, currentY, current_journey: list):
+def bruteforce (buffer_size, matrix, direction, currentX, currentY, current_journey: list, sequences, sequences_rewards, matrix_width, matrix_height):
     global possible_move, maximum_reward
     if (buffer_size == 0):
         copy_current_journey = current_journey.copy()
         # print(copy_current_journey)
-        current_reward = count_reward(copy_current_journey)
+        current_reward = count_reward(copy_current_journey, sequences, sequences_rewards, matrix)
         if (current_reward > maximum_reward):
             maximum_reward = current_reward
             possible_move = copy_current_journey
@@ -139,7 +84,7 @@ def bruteforce (buffer_size, matrix, direction, currentX, currentY, current_jour
             for j in range (matrix_width):
                 if [currentX, j] not in current_journey:
                     current_journey.append([currentX, j])
-                    bruteforce(buffer_size-1, matrix, False, currentX, j, current_journey)
+                    bruteforce(buffer_size-1, matrix, False, currentX, j, current_journey, sequences, sequences_rewards, matrix_width, matrix_height)
                     current_journey.pop()
                 else:
                     pass
@@ -147,53 +92,80 @@ def bruteforce (buffer_size, matrix, direction, currentX, currentY, current_jour
             for i in range (matrix_height):
                 if [i, currentY] not in current_journey:
                     current_journey.append([i, currentY])
-                    bruteforce(buffer_size-1, matrix, True, i, currentY, current_journey)
+                    bruteforce(buffer_size-1, matrix, True, i, currentY, current_journey, sequences, sequences_rewards, matrix_width, matrix_height)
                     current_journey.pop()
                 else:
                     pass
 
-start_time = time.time()
+GREETING_MESSAGE()
+while True:
+    METHOD_CHOICE_MESSAGE()
+    method_choice = int(input("Enter your choice : "))
+    if (method_choice == 1):
+        filename = input("Input the filename : ")
+        try:
+            read_file(filename)
+        except Exception as error:
+            print("Your input is not valid or could not be read by the program")
+    elif (method_choice == 2):
+        # Input method 2
 
-# for j in range (matrix_width):
-bruteforce(max_buffer_size, matrix, True, 0, 0, [])
+        # Initialization for global variable that is used in bruteforce function
+        possible_move = ['']  
+        maximum_reward = 0
 
-# index_max = possible_move[0][1]
-# for i in range(1, len(possible_move)):
-#     if possible_move[i][1] > possible_move[index_max][1]:
-#         index_max = i
+        # Asking input from user
+        # unique_token that is available initialization
+        unique_token_amount = int(input())
+        unique_token = ['' for i in range(unique_token_amount)]
+        unique_token_input = input().split()
+        for i in range (len(unique_token)):
+            unique_token[i] = unique_token_input[i]
 
-# max_reward = possible_move[index_max][1]
-formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move))
-move_coordinates = index_to_coordinate(possible_move)
-time_execution = (time.time() - start_time) * 1000
+        # buffer_size initialization
+        max_buffer_size = int(input())
 
-print(maximum_reward)
-print(formatted_sequence)
-print_coordinate(move_coordinates)
-print()
-print(time_execution, "ms")  
-print()
+        # matrix initialization
+        matrix_width, matrix_height = map(int, input().split())
+        matrix = matrix_randomize(matrix_width, matrix_height, unique_token)
 
-confirmation = input("Apakah ingin menyimpan solusi? (y/n) ")
-if (confirmation == "y"):
-    filename = input("Masukkan filename : ")
-    with open(filename, "w") as file1:
-        file1.write(str(maximum_reward) + "\n")
-        file1.write(formatted_sequence + "\n")
-        for coordinate in move_coordinates:
-            file1.write(",".join(map(str, coordinate)) + "\n")
-        file1.write("%s ms" % time_execution)
-else:
-    print("Terima kasih ! Program selesai")
+        # sequence initialization
+        sequence_amount = int(input())
+        maximal_sequence_size = int(input())
+        sequences = sequence_randomize(sequence_amount, maximal_sequence_size, unique_token)
 
-# def count_reward (sequence):
-#     reward = 0
-#     system = True
-#     for i in range (len(sequences)):
-#         for j in range (len(sequence) - len(sequences[i]) + 1):
-#             for k in range (len(sequences[i])):
-#                 if (sequences[i][k] != sequence[j+k]):
-#                     system = False
-#             if (system):
-#                 reward += sequences_rewards
-#     return reward
+        # sequence_rewards initialization
+        sequences_rewards = reward_randomize(sequence_amount)
+
+        # information of randomization result of input two method
+        PRINT_INFORMATION(matrix, sequences, sequences_rewards, max_buffer_size)
+
+        # begin bruteforce
+        start_time = time.time()
+        bruteforce(max_buffer_size, matrix, True, 0, 0, [], sequences, sequences_rewards, matrix_width, matrix_height)
+        # bruteforce ended
+
+        # format needed information
+        formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move, matrix))
+        move_coordinates = index_to_coordinate(possible_move)
+        time_execution = (time.time() - start_time) * 1000
+
+        # output as formatted
+        FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution)
+
+        # asking user to output to file
+        OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution)
+
+        # asking user if they want to reuse the program
+        if not REUSE_PROGRAM_CONFIRMATION() :
+            exit()
+        else:
+            CLEAR_TERMINAL()
+            GREETING_MESSAGE()
+
+    elif (method_choice == 3):
+        exit()
+
+    else:
+        ERROR_MESSAGE(1,3)
+
