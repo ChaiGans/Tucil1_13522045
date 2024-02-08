@@ -58,6 +58,24 @@ def reward_randomize(sequence_amount):
         result_rewards.append(random.randint(10, 50))
     return result_rewards
 
+def last_index_subarray(sequence, subarray):
+    if len(subarray) > len(sequence):
+        return -1
+
+    for i in range(len(sequence) - len(subarray) + 1):
+        if sequence[i:i+len(subarray)] == subarray:
+            return i+len(subarray)
+
+    return -1
+
+def optimal_sequence(sequence, sequences):
+    optimal_index = -1
+    for sub in sequences:
+        last_index = last_index_subarray(sequence, sub)
+        if last_index > optimal_index:
+            optimal_index = last_index
+    return optimal_index
+
 # def currentjourney_to_sequence (current_journey):
 #     a = []
 #     for i in range (len(current_journey)):

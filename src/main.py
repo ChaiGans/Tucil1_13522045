@@ -79,15 +79,17 @@ def PRINT_INFORMATION(matrix, sequences, sequences_rewards, max_buffer_size):
     print("Sequence Rewards:", sequences_rewards)  
 
 # direction (true: vertical, false: horcaizontal)
-def bruteforce (buffer_size, matrix, direction, currentX, currentY, current_journey: list, sequences, sequences_rewards, matrix_width, matrix_height):
-    global possible_move, maximum_reward
+def bruteforce(buffer_size, matrix, direction, currentX, currentY, current_journey: list, sequences, sequences_rewards, matrix_width, matrix_height):
+    global possible_move, maximum_reward, last_index_optimal
     if (buffer_size == 0):
         copy_current_journey = current_journey.copy()
-        # print(copy_current_journey)
         current_reward = count_reward(copy_current_journey, sequences, sequences_rewards, matrix)
-        if (current_reward > maximum_reward):
-            maximum_reward = current_reward
-            possible_move = copy_current_journey
+        if (current_reward != 0):
+            current_last_index = optimal_sequence(currentjourney_to_sequence(copy_current_journey,matrix), sequences)
+            if current_reward > maximum_reward or (current_reward == maximum_reward and current_last_index < last_index_optimal):
+                last_index_optimal = current_last_index
+                maximum_reward = current_reward
+                possible_move = copy_current_journey
         return None
     else:
         if (direction):
@@ -120,6 +122,7 @@ while True:
         filename = input("Input the filename : ")
 
         max_buffer_size, matrix, sequences, matrix_width, matrix_height, sequences_rewards = read_file(filename)
+        last_index_optimal = max_buffer_size
         
         # information of randomization result of input two method
         PRINT_INFORMATION(matrix, sequences, sequences_rewards, max_buffer_size)
@@ -132,7 +135,7 @@ while True:
         # format needed information
         time_execution = (time.time() - start_time) * 1000
         if (maximum_reward != 0):
-            formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move, matrix))
+            formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move, matrix)[0:last_index_optimal])
             move_coordinates = index_to_coordinate(possible_move)
 
             # output as formatted
@@ -168,6 +171,7 @@ while True:
 
         # buffer_size initialization
         max_buffer_size = int(input())
+        last_index_optimal = max_buffer_size
 
         # matrix initialization
         matrix_width, matrix_height = map(int, input().split())
@@ -190,15 +194,25 @@ while True:
         # bruteforce ended
 
         # format needed information
-        formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move, matrix))
-        move_coordinates = index_to_coordinate(possible_move)
         time_execution = (time.time() - start_time) * 1000
+        if (maximum_reward != 0):
+            formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move, matrix)[0:last_index_optimal])
+            move_coordinates = index_to_coordinate(possible_move)
 
-        # output as formatted
-        FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution)
+            # output as formatted
+            FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution)
 
-        # asking user to output to file
-        OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution)
+            # asking user to output to file
+            OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution, True)
+        else:
+            print(maximum_reward)
+            print()
+            print(time_execution, "ms")  
+            print()
+
+            # asking user to output to file
+            OUTPUT_TO_FILE_CONFIRMATION([], [], time_execution, False)
+
 
         # asking user if they want to reuse the program
         if not REUSE_PROGRAM_CONFIRMATION() :
