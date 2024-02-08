@@ -9,7 +9,7 @@ def print_matrix(matrix):
 
 def print_coordinate(matrix):
     for row in matrix:
-        print(",".join(map(str, row)))
+        print(", ".join(map(str, row)))
         
 def read_file(filename):
     with open(filename, 'r', encoding='utf-8') as file:
