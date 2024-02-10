@@ -114,19 +114,19 @@ cd src
 ## Guides
 ### Input file method
 1. Select a file with the .txt extension and ensure that the input format is correct. Any deviation from the specified format may result in errors on the website.
-2. Once the file is selected, simply click the "Solve" button, and the solution will be displayed on the screen.
+2. Once the file is selected, simply click the `Solve` button, and the solution will be displayed on the screen.
 3. Users have the option to either save the solution or close the popup solution window. They can then select another file or switch to another input method.
 
 ### Random Input Method
 1. Choose the buffer size from the available options.
 2. Enter unique tokens to define the variables that will appear in the matrix and sequences.
-3. Input the desired matrix width and height to be randomized, then click the "Randomize" button to generate the matrix. The generated matrix will be displayed on the screen, indicating a successful generation.
-4. Specify the number of sequences to be generated and the maximum length for each sequence. After clicking the "Randomize" button, the sequences and their corresponding rewards will appear on the screen, indicating successful generation.
+3. Input the desired matrix width and height to be randomized, then click the `Randomize` button to generate the matrix. The generated matrix will be displayed on the screen, indicating a successful generation.
+4. Specify the number of sequences to be generated and the maximum length for each sequence. After clicking the `Randomize` button, the sequences and their corresponding rewards will appear on the screen, indicating successful generation.
 5. Ensure that all required information has been entered correctly, and verify that the matrix and sequences are displayed on the screen.
-6. Click the "Solve" button to find the output solution, which will be displayed in a popup window.
+6. Click the `Solve` button to find the output solution, which will be displayed in a popup window.
 
 ### How to save solution
-1. After the solution appears in the popup window, click the "Save Solution" button. This will prompt an input field asking for a .txt filename.
+1. After the solution appears in the popup window, click the `Save Solution` button. This will prompt an input field asking for a .txt filename.
 2. Enter the desired filename, ensuring that it ends with the .txt extension, as the program can only write to .txt files.
 3. Check the local directory for the outputted file, which can be found in src/backend/output/[filename].
 
