@@ -58,14 +58,6 @@ def FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_
     print(time_execution, "ms")  
     print()
 
-def get_valid_filename():
-    while True:
-        filename = input("Enter filename (must end with .txt): ")
-        if filename.endswith('.txt'):
-            return filename
-        else:
-            print("Please enter a filename with a .txt extension.")
-
 @app.route("/", methods=['GET', 'POST'])
 def get_data():
     global maximum_reward, possible_move, last_index_optimal, time_execution, formatted_sequence, move_coordinates

@@ -1,7 +1,4 @@
 import time
-import random
-
-random.seed(time.time())
 
 def print_matrix(matrix):
     for row in matrix:
@@ -34,30 +31,6 @@ def read_file(filename):
 
     return max_buffer_size, matrix, sequences, matrix_width, matrix_height, sequences_rewards
 
-def matrix_randomize(matrix_width, matrix_height, unique_token):
-    initial_matrix = [['' for _ in range (matrix_width)] for _ in range (matrix_height)]
-    for i in range (matrix_height):
-        for j in range (matrix_width):
-            initial_matrix[i][j] = unique_token[random.randint(0, len(unique_token)-1)]
-    return initial_matrix
-
-
-def sequence_randomize(sequence_amount, maximal_sequence_size, unique_token):
-    result_sequences = []
-    for i in range (sequence_amount):
-        sequence_size = random.randint(2, maximal_sequence_size)
-        initial_sequence = ['' for _ in range (sequence_size)]
-        for j in range (sequence_size):
-            initial_sequence[j] = unique_token[random.randint(0, len(unique_token)-1)]
-        result_sequences.append(initial_sequence)
-    return result_sequences
-
-def reward_randomize(sequence_amount):
-    result_rewards = []
-    for _ in range (sequence_amount):
-        result_rewards.append(random.randint(10, 50))
-    return result_rewards
-
 def last_index_subarray(sequence, subarray):
     if len(subarray) > len(sequence):
         return -1
@@ -75,12 +48,6 @@ def optimal_sequence(sequence, sequences):
         if last_index > optimal_index:
             optimal_index = last_index
     return optimal_index
-
-# def currentjourney_to_sequence (current_journey):
-#     a = []
-#     for i in range (len(current_journey)):
-#         a.append(matrix[current_journey[i][0]][current_journey[i][1]])
-#     return a
 
 def currentjourney_to_sequence (current_journey, matrix):
     a = []
@@ -112,23 +79,3 @@ def index_to_coordinate(sequence):
         sequence[i][1] += 1
         sequence[i][0], sequence[i][1] = sequence[i][1], sequence[i][0]
     return sequence
-
-
-# index_max = possible_move[0][1]
-# for i in range(1, len(possible_move)):
-#     if possible_move[i][1] > possible_move[index_max][1]:
-#         index_max = i
-
-# max_reward = possible_move[index_max][1]
-
-# def count_reward (sequence):
-#     reward = 0
-#     system = True
-#     for i in range (len(sequences)):
-#         for j in range (len(sequence) - len(sequences[i]) + 1):
-#             for k in range (len(sequences[i])):
-#                 if (sequences[i][k] != sequence[j+k]):
-#                     system = False
-#             if (system):
-#                 reward += sequences_rewards
-#     return reward
