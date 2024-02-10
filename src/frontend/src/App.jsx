@@ -129,7 +129,6 @@ function App() {
       });
 
       if (response.ok) {
-        console.log(data);
         console.log("Data sent successfully");
       } else {
         console.error("Failed to send data to the backend");
@@ -156,7 +155,6 @@ function App() {
       });
 
       if (response.ok) {
-        console.log(data);
         console.log("Data sent successfully");
       } else {
         console.error("Failed to send data to the backend");
@@ -433,7 +431,7 @@ function App() {
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody className="font-rajdhaniBold text-[20px] mt-4">
-                      {result.length === 0 ? (
+                      {result.length === 0 || result[1].length === 0 ? (
                         <div>Loading...</div>
                       ) : result[0] === 0 ? (
                         <div>No sequence fulfilled</div>
