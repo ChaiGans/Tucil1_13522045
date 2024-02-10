@@ -5,8 +5,8 @@
 ## Table of Contents
 
 - [Short Description](#short-description)
-- [Built With](#built-with)
 - [Creator](#creator)
+- [Built With](#built-with)
 - [Installation](#installation)
 - [Guides](#guides)
 - [Website Overview](#website-overview)
@@ -44,35 +44,72 @@ For more detailed information on Cyberpunk 2077 Breach Protocol, refer to this [
 - [Tailwind](https://tailwindcss.com/)
 
 ## Installation
-
+## WEB-BASED GUI
 If you want to run this program you will need to do these steps
 
 1. Clone this repository :
 ```shell
-git clone https://github.com/FarelW/Algeo02-22045
+git clone git@github.com:ChaiGans/Tucil1_13522045.git
 ```
 
-2. Package Download :
+2. Navigate to the `src` directory:
 ```shell
-cd  src
+cd .\Tucil1_13522045\
+cd src
+```
+
+3. Open another terminal in the same folder directory. Now, you should have two terminals open, both in the `Tucil1_13522045/src` directory.
+
+### First Terminal (To run frontend server)
+4. Change directory to the frontend folder and execute the following commands:
+```shell
+cd frontend
 npm install
+npm run dev
 ```
-
-3. Run on your localhost server :
+5. Open a web browser and navigate to [http://localhost:5173/](http://localhost:5173/). Note: The port number may vary if the default port is in use. Check the terminal to determine which port the server is running on.
+   
+### Second terminal (To run backend server)
+6. Change directory to the backend folder:
 ```shell
-npm run start
+cd backend
 ```
 
-4. Now, set up the backend server, by first opening new terminal in the main folder Algeo02-22045, type the following command in terminal on specified directory :
-``` shell
-cd src
-cd src
-go mod tidy
-cd api
-go run ./main.go
+Now, we need to set venv in order to run the program
+
+*For windows user*
+```shell
+py -3 -m venv .venv
+.venv\Scripts\activate
 ```
 
-At last, your frontend and backend server will run on different port (usually :3000 for frontend and :8080 for backend server), it maybe different depends on your unused port.
+*For linux/macOS user*
+```shell
+python3 -m venv .venv
+. .venv/bin/activate
+```
+
+**If flask is never installed on your device, please do `pip install flask` prior running the program, because the backend server cant be run without flask.**
+
+7. Start the Flask server by typing the following command:
+```shell
+flask run --debug
+```
+8. The backend server should now be running at [http://127.0.0.1:5000](http://127.0.0.1:5000).
+
+## CLI
+1. Clone this repository :
+```shell
+git clone git@github.com:ChaiGans/Tucil1_13522045.git
+```
+
+2. Navigate to the `src` directory:
+```shell
+cd .\Tucil1_13522045\
+cd src
+```
+
+3. Open terminal in current directory and just type `python main.py`
 
 ## Guides
 ### Input file method
