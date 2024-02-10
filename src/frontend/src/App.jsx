@@ -35,7 +35,30 @@ function App() {
   const [sequence, setSequence] = useState([]);
   const [reward, setReward] = useState([]);
   const [filename, setFilename] = useState("");
-  const [readFileName, setReadFileName] = useState("");
+  const [readFileName, setReadFileName] = useState(null);
+
+  const handleFileChange = (event) => {
+    setReadFileName(event.target.files[0]);
+  };
+
+  const handleSubmitUpload = async (event) => {
+    event.preventDefault()
+    const formData = new FormData();
+    formData.append("file", readFileName);
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000//upload/", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log(response)
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
 
   const [result, setResult] = useState([]);
 
@@ -138,30 +161,30 @@ function App() {
     }
   };
 
-  const handleSubmitUpload = async (event) => {
-    event.preventDefault();
+  // const handleSubmitUpload = async (event) => {
+  //   event.preventDefault();
 
-    const data = {
-      readFileName,
-    };
+  //   const data = {
+  //     readFileName,
+  //   };
 
-    try {
-      const response = await fetch("http://127.0.0.1:5000/upload/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+  //   try {
+  //     const response = await fetch("http://127.0.0.1:5000/upload/", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(data),
+  //     });
 
-      if (response.ok) {
-        console.log("Data sent successfully");
-      } else {
-        console.error("Failed to send data to the backend");
-      }
-    } catch (error) {
-      console.error("Error sending data to the backend:", error);
-    }}
+  //     if (response.ok) {
+  //       console.log("Data sent successfully");
+  //     } else {
+  //       console.error("Failed to send data to the backend");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error sending data to the backend:", error);
+  //   }}
 
   useEffect(() => {
     async function fetchData() {
@@ -510,7 +533,8 @@ function App() {
         <form onSubmit={handleSubmitUpload}>
           <div className="flex justify-center flex-col items-center py-2 px-4">
             <div className="flex w-1/2 justify-center items-center">
-              <Input
+              <input type="file" className="border-basic border-2 text-basic font-rajdhaniMedium" onChange={handleFileChange} />
+              {/* <Input
                 placeholder="Enter your filename here (include .txt)"
                 size="md"
                 className="font-rajdhaniMedium text-center text-basic bg-bgblack"
@@ -525,11 +549,13 @@ function App() {
                 className="w-[40%] h-[50px] hover:bg-basic hover:text-black font-rajdhaniMedium border border-basic cursor-pointer text-center text-bgblack bg-basic"
               >
                 UPLOAD FILE NAME
-              </button>
+              </button> */}
             </div>
-            {!readFileName.endsWith(".txt") || readFileName.length === 0 ? (
-              <p className="text-basic font-rajdhaniLight text-[14px] mt-2">*File name must end with .txt</p>
-            ) : null}
+            {/* {!readFileName.endsWith(".txt") || readFileName.length === 0 ? (
+              <p className="text-basic font-rajdhaniLight text-[14px] mt-2">
+                *File name must end with .txt
+              </p>
+            ) : null} */}
 
             <div className="w-[90%] mt-6 flex justify-center items-center ">
               <Button

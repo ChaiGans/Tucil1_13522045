@@ -134,9 +134,11 @@ def upload_file():
     global maximum_reward, possible_move, last_index_optimal, time_execution, formatted_sequence, move_coordinates
 
     if (request.method == 'POST'):
-        file = request.json
 
-        max_buffer_size, matrix, sequences, matrix_width, matrix_height, sequences_rewards = read_file(file['readFileName'])
+        file = request.files['file']
+        file.save('input.txt')
+
+        max_buffer_size, matrix, sequences, matrix_width, matrix_height, sequences_rewards = read_file('input.txt')
 
         PRINT_INFORMATION(matrix, sequences, sequences_rewards, max_buffer_size)
 
