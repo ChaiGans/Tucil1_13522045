@@ -66,28 +66,6 @@ def get_valid_filename():
         else:
             print("Please enter a filename with a .txt extension.")
 
-def OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution, boolean):
-    # boolean = true (got formatted sequence) ; false (no formatted sequence)
-    confirmation = input("Do you want to save your solution? (y/n) ")
-    choice_correct = False
-    while (not choice_correct):
-        if (confirmation == "y"):
-            choice_correct = True
-            filename = get_valid_filename()
-            with open(filename, "w") as file1:
-                file1.write(str(maximum_reward) + "\n")
-                if (boolean):
-                    file1.write(formatted_sequence + "\n")
-                    for coordinate in move_coordinates:
-                        file1.write(", ".join(map(str, coordinate)) + "\n")
-                file1.write("\n%s ms" % time_execution)
-        elif (confirmation == "n"):
-            choice_correct = True
-        else:
-            print("We do not understand your command, please enter (y/n) only.")
-            confirmation = input("Do you want to save your solution? (y/n) ")
-
-
 @app.route("/", methods=['GET', 'POST'])
 def get_data():
     global maximum_reward, possible_move, last_index_optimal, time_execution, formatted_sequence, move_coordinates
@@ -128,16 +106,12 @@ def get_data():
             # output as formatted
             FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution)
 
-            # asking user to output to file
-            # OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution, True)
         else:
             print(maximum_reward)
             print()
             print(time_execution, "ms")  
             print()
 
-            # asking user to output to file
-            # OUTPUT_TO_FILE_CONFIRMATION([], [], time_execution, False)
         return jsonify({'message': 'POST request received'})
     else:
         return jsonify({'message': 'GET request received'})
@@ -193,16 +167,12 @@ def upload_file():
             # output as formatted
             FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution)
 
-            # asking user to output to file
-            # OUTPUT_TO_FILE_CONFIRMATION(formatted_sequence, move_coordinates, time_execution, True)
         else:
             print(maximum_reward)
             print()
             print(time_execution, "ms")  
             print()
 
-            # asking user to output to file
-            # OUTPUT_TO_FILE_CONFIRMATION([], [], time_execution, False)
 
         return jsonify({'message': 'POST request received'})
 
