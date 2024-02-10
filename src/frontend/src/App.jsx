@@ -533,7 +533,12 @@ function App() {
         <form onSubmit={handleSubmitUpload}>
           <div className="flex justify-center flex-col items-center py-2 px-4">
             <div className="flex w-1/2 justify-center items-center">
-              <input type="file" className="border-basic border-2 text-basic font-rajdhaniMedium" onChange={handleFileChange} />
+              <input
+                type="file"
+                accept=".txt"
+                className="border-basic border-2 text-basic font-rajdhaniMedium"
+                onChange={handleFileChange}
+              />
               {/* <Input
                 placeholder="Enter your filename here (include .txt)"
                 size="md"
