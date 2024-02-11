@@ -89,9 +89,9 @@ python3 -m venv .venv
 . .venv/bin/activate
 ```
 
-**If flask is never installed on your device, please do below step prior running the program, because the backend server cant be run without flask.**
+**Download packages needed, by following below steps**
 ```shell
-pip install Flask
+ python -m pip install Flask Flask-CORS
 ```
 
 7. Start the Flask server by typing the following command:
