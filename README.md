@@ -89,7 +89,10 @@ python3 -m venv .venv
 . .venv/bin/activate
 ```
 
-**If flask is never installed on your device, please do `pip install Flask` prior running the program, because the backend server cant be run without flask.**
+**If flask is never installed on your device, please do below step prior running the program, because the backend server cant be run without flask.**
+```shell
+pip install Flask
+```
 
 7. Start the Flask server by typing the following command:
 ```shell
