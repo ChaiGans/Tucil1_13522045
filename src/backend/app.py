@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # define global variable
-maximum_reward = 0
+maximum_reward = -999999
 formatted_sequence = []
 move_coordinates = []
 time_execution = 0
