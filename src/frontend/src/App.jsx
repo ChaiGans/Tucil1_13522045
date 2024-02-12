@@ -18,7 +18,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 
 function App() {
@@ -37,33 +37,36 @@ function App() {
   const [filename, setFilename] = useState("");
   const [readFileName, setReadFileName] = useState(null);
 
-  const handleFileChange = (event) => {
-    setReadFileName(event.target.files[0]);
-  };
-
-  const handleSubmitUpload = async (event) => {
-    event.preventDefault()
-    const formData = new FormData();
-    formData.append("file", readFileName);
-
-    try {
-      const response = await fetch("http://127.0.0.1:5000//upload/", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        console.log(response)
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  };
-
   const [result, setResult] = useState([]);
 
   // true for method read from file, and false for randomizer
   const [method, setMethod] = useState(true);
+
+    const handleFileChange = (event) => {
+      setReadFileName(event.target.files[0]);
+    };
+
+    const handleSubmitUpload = async (event) => {
+      event.preventDefault();
+      const formData = new FormData();
+      formData.append("file", readFileName);
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000//upload/", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          console.log(response);
+        }
+
+        const resultData = await response.json();
+        setResult(resultData);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    };
 
   function matrixRandomize(matrixWidth, matrixHeight, uniqueToken) {
     let initialMatrix = [];
@@ -82,7 +85,7 @@ function App() {
     let resultSequences = [];
     for (let i = 0; i < sequenceAmount; i++) {
       let sequenceSize =
-        Math.floor(Math.random() * (maximalSequenceSize - 2)) + 2;
+        Math.floor(Math.random() * (maximalSequenceSize - 1)) + 1;
       let initialSequence = [];
       for (let j = 0; j < sequenceSize + 1; j++) {
         let randomIndex = Math.floor(Math.random() * uniqueToken.length);
@@ -130,6 +133,10 @@ function App() {
       } else {
         console.error("Failed to send data to the backend");
       }
+
+      const resultData = await response.json();
+      setResult(resultData);
+
     } catch (error) {
       console.error("Error sending data to the backend:", error);
     }
@@ -153,6 +160,7 @@ function App() {
 
       if (response.ok) {
         console.log("Data sent successfully");
+        alert('Solution saved !')
       } else {
         console.error("Failed to send data to the backend");
       }
@@ -160,33 +168,6 @@ function App() {
       console.error("Error sending data to the backend:", error);
     }
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("http://127.0.0.1:5000/results", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setResult(data);
-        } else {
-          console.error("Failed to fetch data from the server");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setTimeout(fetchData, 5000);
-      }
-    }
-
-    fetchData();
-    return () => clearTimeout(fetchData);
-  }, []);
 
   return (
     <main className="px-20 py-16 bg-bgblack">
@@ -369,8 +350,12 @@ function App() {
                     focusBorderColor="#D0ED57"
                     borderRadius={"0"}
                     onChange={(ev) => setMaximalSequenceSize(ev.target.value)}
+                    min={2}
                     required
                   />
+                  {maximalSequenceSize < 2 ? (
+                    <p className=" text-red-700 font-rajdhaniBold">*Maximal size for sequence is expected to be higher 2, any lower than two will be assume as 2</p>
+                  ) : null}
                   <div
                     onClick={() => {
                       setSequence(
@@ -432,7 +417,7 @@ function App() {
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody className="font-rajdhaniBold text-[20px] mt-4">
-                      {result.length === 0 || result[1].length === 0 ? (
+                      {result.length === 0 ? (
                         <div>Loading...</div>
                       ) : result[0] === 0 ? (
                         <div>No sequence fulfilled</div>

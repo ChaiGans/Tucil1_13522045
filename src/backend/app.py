@@ -104,14 +104,9 @@ def get_data():
             print(time_execution, "ms")  
             print()
 
-        return jsonify({'message': 'POST request received'})
+        return jsonify(maximum_reward, formatted_sequence, move_coordinates, time_execution)
     else:
         return jsonify({'message': 'GET request received'})
-
-@app.route("/results", methods=['GET'])
-def send_data():
-    global maximum_reward, formatted_sequence, move_coordinates, time_execution
-    return jsonify(maximum_reward, formatted_sequence, move_coordinates, time_execution)
 
 @app.route("/save/", methods=['POST'])
 def save_file():
@@ -128,6 +123,8 @@ def save_file():
                 for coordinate in move_coordinates:
                     file1.write(", ".join(map(str, coordinate)) + "\n")
             file1.write("\n%s ms" % time_execution)
+        return jsonify({'message': 'SAVE request received'})
+    
 
 @app.route('/upload/', methods=['POST'])
 def upload_file():
@@ -168,7 +165,7 @@ def upload_file():
             print()
 
 
-        return jsonify({'message': 'POST request received'})
+        return jsonify(maximum_reward, formatted_sequence, move_coordinates, time_execution)
 
 if __name__ == "__main__":
     app.run(debug=True)
