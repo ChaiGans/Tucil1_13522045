@@ -12,7 +12,7 @@ def read_file(filename):
     with open(filename, 'r', encoding='utf-8') as file:
         max_buffer_size = int(file.readline().strip())
 
-        matrix_width, matrix_height = map(int, file.readline().strip().split())
+        matrix_height, matrix_width = map(int, file.readline().strip().split())
 
         matrix = []
         for _ in range(matrix_height):
