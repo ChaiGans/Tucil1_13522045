@@ -91,7 +91,7 @@ python3 -m venv .venv
 
 **Download packages needed, by following below steps**
 ```shell
- python -m pip install Flask Flask-CORS
+python -m pip install Flask Flask-CORS
 ```
 
 7. Start the Flask server by typing the following command:

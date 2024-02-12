@@ -409,7 +409,10 @@ function App() {
               </div>
               <div className="w-[90%] mt-6 flex justify-center items-center ">
                 <Button
-                  onClick={onOpen}
+                  onClick={() => {
+                    onOpen();
+                    setResult([]);
+                  }}
                   type="submit"
                   width={"40%"}
                   borderColor={"#0e1111"}
@@ -518,7 +521,10 @@ function App() {
 
             <div className="w-[90%] mt-6 flex justify-center items-center ">
               <Button
-                onClick={onOpen}
+                onClick={() => {
+                  onOpen();
+                  setResult([]);
+                }}
                 type="submit"
                 width={"40%"}
                 borderColor={"#0e1111"}
