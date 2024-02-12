@@ -110,6 +110,7 @@ git clone git@github.com:ChaiGans/Tucil1_13522045.git
 ```shell
 cd .\Tucil1_13522045\
 cd src
+cd CLI
 ```
 
 3. Open terminal in current directory and just type `python main.py`
