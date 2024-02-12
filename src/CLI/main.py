@@ -197,7 +197,7 @@ while True:
         time_execution = (time.time() - start_time) * 1000
         if (maximum_reward != 0):
             formatted_sequence = ' '.join(currentjourney_to_sequence(possible_move, matrix)[0:last_index_optimal])
-            move_coordinates = index_to_coordinate(possible_move)
+            move_coordinates = index_to_coordinate(possible_move[0:last_index_optimal])
 
             # output as formatted
             FORMATTED_OUTPUT(maximum_reward, formatted_sequence, move_coordinates, time_execution)
