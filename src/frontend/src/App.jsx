@@ -84,6 +84,9 @@ function App() {
   function sequenceRandomize(sequenceAmount, maximalSequenceSize, uniqueToken) {
     let resultSequences = [];
     for (let i = 0; i < sequenceAmount; i++) {
+      if (maximalSequenceSize < 2) {
+        maximalSequenceSize = 2;
+      }
       let sequenceSize =
         Math.floor(Math.random() * (maximalSequenceSize - 1)) + 1;
       let initialSequence = [];
